@@ -41,7 +41,6 @@ public class TwitterListener implements StatusListener, Subject {
 
   @Override // implementing method defined in Subject interface
   public void notifyObservers(String text) {
-    // you need to write some codes here 
 	for (Observer observer : mapObservers.keySet()) {
 		observer.update(text);
 	}
@@ -50,7 +49,6 @@ public class TwitterListener implements StatusListener, Subject {
   @Override // implementing method defined in Subject interface
   public boolean removeObserver(Observer observer) {
     boolean result = false;
-    // you need to write some codes here 
     mapObservers.remove(observer);
     return result;
   }
