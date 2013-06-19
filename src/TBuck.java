@@ -12,7 +12,7 @@ public class TBuck {
 
     TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
     twitterStream.addListener(listener);
-    Map<String, User> mapUsers= new HashMap<String, User>();
+    Map<String, CompanyLogger> mapUsers= new HashMap<String, CompanyLogger>();
 
     Scanner sc = new Scanner(System.in);
     List<Long> follow = new ArrayList<Long>();
@@ -25,24 +25,24 @@ public class TBuck {
 
       if (cmd[0].equals("quit") || cmd[0].equals("q")) {
         System.exit(0);
-      } else if (cmd[0].equals("user")) {
-        // add user
+      } else if (cmd[0].equals("company")) {
+        // add company
         if (mapUsers.containsKey(cmd[1])) {
-          System.out.printf("User %s already present, ignoring add user\n", cmd[1]);
+          System.out.printf("Company %s already present, ignoring add user\n", cmd[1]);
           continue; 
         }    
-        User user = new User(cmd[1]);
-        mapUsers.put(cmd[1], user);
+        CompanyLogger company = new CompanyLogger(cmd[1]);
+        mapUsers.put(cmd[1], company);
       } else if (cmd[0].equals("sub")) {
         // subscribe
-        User user = mapUsers.get(cmd[1]);
+        CompanyLogger company = mapUsers.get(cmd[1]);
 
-        if (user == null) {
-          System.out.printf("User %s does NOT exist, ignoring subcribe\n", cmd[1]);
+        if (company == null) {
+          System.out.printf("Company %s does NOT exist, ignoring subcribe\n", cmd[1]);
           continue; 
         }
-        if (!listener.registerObserver(user, cmd[2])) {
-          System.out.printf("User %s has subscribed %s before\n", cmd[1], cmd[2]);
+        if (!listener.registerObserver(company, cmd[2])) {
+          System.out.printf("Company %s has subscribed %s before\n", cmd[1], cmd[2]);
           continue;
         }
         if (track.contains(cmd[2])) {
@@ -53,13 +53,13 @@ public class TBuck {
         twitterStream.filter(new FilterQuery(0, followArray, trackArray));
       } else if (cmd[0].equals("unsub")) {
         // unsubscribe
-        User user = mapUsers.get(cmd[1]);
+        CompanyLogger company = mapUsers.get(cmd[1]);
 
-        if (user == null) {
-          System.out.printf("User %s does NOT exist, ignoring unsubscribe\n", cmd[1]);
+        if (company == null) {
+          System.out.printf("Company %s does NOT exist, ignoring unsubscribe\n", cmd[1]);
           continue; 
         }
-        listener.removeObserver(user); 
+        listener.removeObserver(company); 
       }
     }
   }

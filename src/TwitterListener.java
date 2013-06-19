@@ -42,13 +42,22 @@ public class TwitterListener implements StatusListener, Subject {
   @Override // implementing method defined in Subject interface
   public void notifyObservers(String text) {
 	for (Observer observer : mapObservers.keySet()) {
-		observer.update(text);
+		Set<String> subs = mapObservers.get(observer);
+		for (String sub : subs) {
+			if (text.contains(sub)) {
+				observer.update(text);
+			}
+		}
 	}
   }
 
   @Override // implementing method defined in Subject interface
   public boolean removeObserver(Observer observer) {
     boolean result = false;
+    if (!mapObservers.containsKey(observer)) {
+    	return result;
+    }
+    result = true;
     mapObservers.remove(observer);
     return result;
   }
